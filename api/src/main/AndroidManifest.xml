@@ -14,8 +14,4 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<resources>
-  <color name="colorPrimary">#3F51B5</color>
-  <color name="colorPrimaryDark">#303F9F</color>
-  <color name="colorAccent">#FF4081</color>
-</resources>
+<manifest package="com.yanzhenjie.andserver" />

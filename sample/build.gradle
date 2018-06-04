@@ -1,26 +1,32 @@
-apply plugin: rootProject.ext.plugins.application
+apply plugin: rootProject.ext.plugins.android
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+  compileSdkVersion rootProject.ext.android.compileSdkVersion
+  buildToolsVersion rootProject.ext.android.buildToolsVersion
 
-    defaultConfig {
-        applicationId rootProject.ext.android.applicationId
-        minSdkVersion rootProject.ext.android.sampleMinSdkVersion
-        targetSdkVersion rootProject.ext.android.sampleTargetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+  defaultConfig {
+    applicationId rootProject.ext.android.applicationId
+    minSdkVersion rootProject.ext.android.sampleMinSdkVersion
+    targetSdkVersion rootProject.ext.android.sampleTargetSdkVersion
+    versionCode rootProject.ext.android.versionCode
+    versionName rootProject.ext.android.versionName
 
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
-        }
+    compileOptions {
+      sourceCompatibility JavaVersion.VERSION_1_7
+      targetCompatibility JavaVersion.VERSION_1_7
     }
+  }
 }
 
 dependencies {
-    implementation rootProject.ext.dependencies.andserver
-    implementation rootProject.ext.dependencies.design
-    implementation rootProject.ext.dependencies.appCompat
-    implementation rootProject.ext.dependencies.loading
+  // implementation rootProject.ext.dependencies.andserverApi
+  // implementation rootProject.ext.dependencies.andserverAnnotation
+  // annotationProcessor rootProject.ext.dependencies.andserverProcessor
+  implementation project(':api')
+  implementation project(':annotation')
+  annotationProcessor project(':processor')
+
+  implementation rootProject.ext.dependencies.design
+  implementation rootProject.ext.dependencies.appCompat
+  implementation rootProject.ext.dependencies.loading
 }

@@ -1,0 +1,16 @@
+apply plugin: rootProject.ext.plugins.javaLibrary
+
+compileJava {
+  sourceCompatibility = '1.7'
+  targetCompatibility = '1.7'
+}
+
+dependencies {
+  //    api rootProject.ext.dependencies.andserverAnnotation
+  api project(':annotation')
+
+  api rootProject.ext.dependencies.autoService
+  api rootProject.ext.dependencies.javaPoet
+  api rootProject.ext.dependencies.commonsLang
+  api rootProject.ext.dependencies.commonsCollections
+}

@@ -30,135 +30,123 @@ import com.yanzhenjie.loading.dialog.LoadingDialog;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Yan Zhenjie on 2016/6/13.
- */
+/** Created by Yan Zhenjie on 2016/6/13. */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ServerManager mServerManager;
+  private ServerManager mServerManager;
 
-    private Button mBtnStart;
-    private Button mBtnStop;
-    private Button mBtnBrowser;
-    private TextView mTvMessage;
+  private Button mBtnStart;
+  private Button mBtnStop;
+  private Button mBtnBrowser;
+  private TextView mTvMessage;
 
-    private LoadingDialog mDialog;
-    private String mRootUrl;
+  private LoadingDialog mDialog;
+  private String mRootUrl;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
 
-        mBtnStart = (Button) findViewById(R.id.btn_start);
-        mBtnStop = (Button) findViewById(R.id.btn_stop);
-        mBtnBrowser = (Button) findViewById(R.id.btn_browse);
-        mTvMessage = (TextView) findViewById(R.id.tv_message);
+    mBtnStart = findViewById(R.id.btn_start);
+    mBtnStop = findViewById(R.id.btn_stop);
+    mBtnBrowser = findViewById(R.id.btn_browse);
+    mTvMessage = findViewById(R.id.tv_message);
 
-        mBtnStart.setOnClickListener(this);
-        mBtnStop.setOnClickListener(this);
-        mBtnBrowser.setOnClickListener(this);
+    mBtnStart.setOnClickListener(this);
+    mBtnStop.setOnClickListener(this);
+    mBtnBrowser.setOnClickListener(this);
 
-        // AndServer run in the service.
-        mServerManager = new ServerManager(this);
-        mServerManager.register();
+    // AndServer run in the service.
+    mServerManager = new ServerManager(this);
+    mServerManager.register();
 
-        // startServer;
-        mBtnStart.performClick();
-    }
+    // startServer;
+    mBtnStart.performClick();
+  }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mServerManager.unRegister();
-    }
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    mServerManager.unRegister();
+  }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.btn_start: {
-                showDialog();
-                mServerManager.startService();
-                break;
-            }
-            case R.id.btn_stop: {
-                showDialog();
-                mServerManager.stopService();
-                break;
-            }
-            case R.id.btn_browse: {
-                if (!TextUtils.isEmpty(mRootUrl)) {
-                    Intent intent = new Intent();
-                    intent.setAction("android.intent.action.VIEW");
-                    intent.setData(Uri.parse(mRootUrl));
-                    startActivity(intent);
-                }
-                break;
-            }
+  @Override
+  public void onClick(View v) {
+    int id = v.getId();
+    switch (id) {
+      case R.id.btn_start: {
+        showDialog();
+        mServerManager.startService();
+        break;
+      }
+      case R.id.btn_stop: {
+        showDialog();
+        mServerManager.stopService();
+        break;
+      }
+      case R.id.btn_browse: {
+        if (!TextUtils.isEmpty(mRootUrl)) {
+          Intent intent = new Intent();
+          intent.setAction("android.intent.action.VIEW");
+          intent.setData(Uri.parse(mRootUrl));
+          startActivity(intent);
         }
+        break;
+      }
     }
+  }
 
-    /**
-     * Start notify.
-     */
-    public void serverStart(String ip) {
-        closeDialog();
-        mBtnStart.setVisibility(View.GONE);
-        mBtnStop.setVisibility(View.VISIBLE);
-        mBtnBrowser.setVisibility(View.VISIBLE);
+  /** Start notify. */
+  public void serverStart(String ip) {
+    closeDialog();
+    mBtnStart.setVisibility(View.GONE);
+    mBtnStop.setVisibility(View.VISIBLE);
+    mBtnBrowser.setVisibility(View.VISIBLE);
 
-        if (!TextUtils.isEmpty(ip)) {
-            List<String> addressList = new LinkedList<>();
-            mRootUrl = "http://" + ip + ":8080/";
-            addressList.add(mRootUrl);
-            addressList.add("http://" + ip + ":8080/login.html");
-            addressList.add("http://" + ip + ":8080/image");
-            addressList.add("http://" + ip + ":8080/download");
-            addressList.add("http://" + ip + ":8080/upload");
-            mTvMessage.setText(TextUtils.join("\n", addressList));
-        } else {
-            mRootUrl = null;
-            mTvMessage.setText(R.string.server_ip_error);
-        }
+    if (!TextUtils.isEmpty(ip)) {
+      List<String> addressList = new LinkedList<>();
+      mRootUrl = "http://" + ip + ":8080/";
+      addressList.add(mRootUrl);
+      addressList.add("http://" + ip + ":8080/login.html");
+      addressList.add("http://" + ip + ":8080/image");
+      addressList.add("http://" + ip + ":8080/download");
+      addressList.add("http://" + ip + ":8080/upload");
+      mTvMessage.setText(TextUtils.join("\n", addressList));
+    } else {
+      mRootUrl = null;
+      mTvMessage.setText(R.string.server_ip_error);
     }
+  }
 
-    /**
-     * Error notify.
-     */
-    public void serverError(String message) {
-        closeDialog();
-        mRootUrl = null;
-        mBtnStart.setVisibility(View.VISIBLE);
-        mBtnStop.setVisibility(View.GONE);
-        mBtnBrowser.setVisibility(View.GONE);
-        mTvMessage.setText(message);
-    }
+  /** Error notify. */
+  public void serverError(String message) {
+    closeDialog();
+    mRootUrl = null;
+    mBtnStart.setVisibility(View.VISIBLE);
+    mBtnStop.setVisibility(View.GONE);
+    mBtnBrowser.setVisibility(View.GONE);
+    mTvMessage.setText(message);
+  }
 
-    /**
-     * Stop notify.
-     */
-    public void serverStop() {
-        closeDialog();
-        mRootUrl = null;
-        mBtnStart.setVisibility(View.VISIBLE);
-        mBtnStop.setVisibility(View.GONE);
-        mBtnBrowser.setVisibility(View.GONE);
-        mTvMessage.setText(R.string.server_stop_succeed);
-    }
+  /** Stop notify. */
+  public void serverStop() {
+    closeDialog();
+    mRootUrl = null;
+    mBtnStart.setVisibility(View.VISIBLE);
+    mBtnStop.setVisibility(View.GONE);
+    mBtnBrowser.setVisibility(View.GONE);
+    mTvMessage.setText(R.string.server_stop_succeed);
+  }
 
-    private void showDialog() {
-        if (mDialog == null)
-            mDialog = new LoadingDialog(this);
-        if (!mDialog.isShowing())
-            mDialog.show();
-    }
+  private void showDialog() {
+    if (mDialog == null) mDialog = new LoadingDialog(this);
+    if (!mDialog.isShowing()) mDialog.show();
+  }
 
-    private void closeDialog() {
-        if (mDialog != null && mDialog.isShowing())
-            mDialog.dismiss();
-    }
-
+  private void closeDialog() {
+    if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
+  }
 }
