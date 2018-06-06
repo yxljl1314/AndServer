@@ -14,5 +14,3 @@ dependencies {
   api rootProject.ext.dependencies.httpcore
   api rootProject.ext.dependencies.fileupload
 }
-
-apply from: 'https://raw.githubusercontent.com/yanzhenjie/bintray/master/maven.gradle'

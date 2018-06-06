@@ -13,4 +13,7 @@ dependencies {
   api rootProject.ext.dependencies.javaPoet
   api rootProject.ext.dependencies.commonsLang
   api rootProject.ext.dependencies.commonsCollections
+
+  api rootProject.ext.dependencies.httpcore
+  api rootProject.ext.dependencies.fileupload
 }
