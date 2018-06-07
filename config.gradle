@@ -1,10 +1,12 @@
 ext {
-  plugins = [java          : 'java',
-             javaLibrary   : 'java-library',
-             android       : 'com.android.application',
-             androidLibrary: 'com.android.library',
-             maven         : 'com.github.dcendents.android-maven',
-             bintray       : 'com.jfrog.bintray']
+  plugins = [java            : 'java',
+             javaLibrary     : 'java-library',
+             javaPluginGradle: 'java-gradle-plugin',
+             android         : 'com.android.application',
+             androidLibrary  : 'com.android.library',
+             maven           : 'com.github.dcendents.android-maven',
+             bintray         : 'com.jfrog.bintray',
+             andserver       : 'com.yanzhenjie.andserver']
 
   android = [applicationId          : "com.yanzhenjie.andserver.sample",
              compileSdkVersion      : 27,
