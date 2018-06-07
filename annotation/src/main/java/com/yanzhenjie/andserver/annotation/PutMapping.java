@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 /** Created by YanZhenjie on 2018/6/4. */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-@RequestMapping(method = RequestMethod.PUT)
 public @interface PutMapping {
 
   /** Alias for {@link RequestMapping#value()}. */

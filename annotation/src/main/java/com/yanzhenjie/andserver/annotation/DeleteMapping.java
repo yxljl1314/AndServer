@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 /** Created by YanZhenjie on 2018/6/4. */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-@RequestMapping(method = RequestMethod.DELETE)
 public @interface DeleteMapping {
 
   /** Alias for {@link RequestMapping#value()}. */
