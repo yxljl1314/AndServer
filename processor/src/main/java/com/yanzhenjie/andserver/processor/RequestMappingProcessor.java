@@ -16,14 +16,12 @@
 package com.yanzhenjie.andserver.processor;
 
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
-import com.yanzhenjie.andserver.annotation.Controller;
-import com.yanzhenjie.andserver.processor.util.Constant;
+import com.yanzhenjie.andserver.annotation.DeleteMapping;
+import com.yanzhenjie.andserver.annotation.GetMapping;
+import com.yanzhenjie.andserver.annotation.PatchMapping;
+import com.yanzhenjie.andserver.annotation.PostMapping;
+import com.yanzhenjie.andserver.annotation.PutMapping;
+import com.yanzhenjie.andserver.annotation.RequestMapping;
 import com.yanzhenjie.andserver.processor.util.Logger;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -41,15 +39,14 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
 /**
- * Created by YanZhenjie on 2018/6/6.
+ * Created by YanZhenjie on 2018/6/7.
  */
 @AutoService(Processor.class)
-public class ControllerProcessor extends AbstractProcessor {
+public class RequestMappingProcessor extends AbstractProcessor {
 
   private Filer mFiler;
   private Elements mElementUtils;
@@ -69,7 +66,12 @@ public class ControllerProcessor extends AbstractProcessor {
   public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
     if (CollectionUtils.isNotEmpty(set)) {
       Map<String, TypeElement> typeMap = new HashMap<>();
-      addElementToMap(roundEnvironment, Controller.class, typeMap);
+      addElementToMap(roundEnvironment, GetMapping.class, typeMap);
+      addElementToMap(roundEnvironment, PutMapping.class, typeMap);
+      addElementToMap(roundEnvironment, PostMapping.class, typeMap);
+      addElementToMap(roundEnvironment, PatchMapping.class, typeMap);
+      addElementToMap(roundEnvironment, DeleteMapping.class, typeMap);
+      addElementToMap(roundEnvironment, RequestMapping.class, typeMap);
       writeToFile(typeMap);
     }
     return false;
@@ -86,40 +88,18 @@ public class ControllerProcessor extends AbstractProcessor {
   }
 
   private void writeToFile(Map<String, TypeElement> typeMap) {
-    for (Map.Entry<String, TypeElement> typeEntry : typeMap.entrySet()) {
-      TypeElement typeElement = typeEntry.getValue();
-
-      TypeName controllerType = TypeName.get(typeElement.asType());
-      FieldSpec controller = FieldSpec.builder(controllerType, "mController", Modifier.PRIVATE).build();
-
-      MethodSpec constructor = MethodSpec.constructorBuilder()
-        .addModifiers(Modifier.PUBLIC)
-        .addParameter(TypeName.get(typeElement.asType()), "controller")
-        .addStatement("this.mController = controller")
-        .build();
-
-      TypeSpec clazz = TypeSpec.classBuilder(typeElement.getSimpleName() + "$$Controller")
-        .addJavadoc(Constant.DOC_EDIT_WARN)
-        .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-        .superclass(ClassName.get(Constant.ANDSERVER_PACKAGE, "BaseController"))
-        .addField(controller)
-        .addMethod(constructor)
-        .build();
-      String packageName = mElementUtils.getPackageOf(typeElement).getQualifiedName().toString();
-      JavaFile javaFile = JavaFile.builder(packageName, clazz).build();
-
-      try {
-        javaFile.writeTo(mFiler);
-      } catch (Exception e) {
-        mLog.e(e);
-      }
-    }
+    // TODO create adapter.
   }
 
   @Override
   public Set<String> getSupportedAnnotationTypes() {
     Set<String> annotations = new LinkedHashSet<>();
-    annotations.add(Controller.class.getCanonicalName());
+    annotations.add(GetMapping.class.getCanonicalName());
+    annotations.add(PostMapping.class.getCanonicalName());
+    annotations.add(PutMapping.class.getCanonicalName());
+    annotations.add(PatchMapping.class.getCanonicalName());
+    annotations.add(DeleteMapping.class.getCanonicalName());
+    annotations.add(RequestMapping.class.getCanonicalName());
     return annotations;
   }
 

@@ -22,7 +22,7 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.yanzhenjie.andserver.annotation.Controller;
+import com.yanzhenjie.andserver.annotation.RestController;
 import com.yanzhenjie.andserver.processor.util.Constant;
 import com.yanzhenjie.andserver.processor.util.Logger;
 
@@ -46,10 +46,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
 /**
- * Created by YanZhenjie on 2018/6/6.
+ * Created by YanZhenjie on 2018/6/7.
  */
 @AutoService(Processor.class)
-public class ControllerProcessor extends AbstractProcessor {
+public class ResetControllerProcessor extends AbstractProcessor {
 
   private Filer mFiler;
   private Elements mElementUtils;
@@ -69,7 +69,7 @@ public class ControllerProcessor extends AbstractProcessor {
   public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
     if (CollectionUtils.isNotEmpty(set)) {
       Map<String, TypeElement> typeMap = new HashMap<>();
-      addElementToMap(roundEnvironment, Controller.class, typeMap);
+      addElementToMap(roundEnvironment, RestController.class, typeMap);
       writeToFile(typeMap);
     }
     return false;
@@ -101,7 +101,7 @@ public class ControllerProcessor extends AbstractProcessor {
       TypeSpec clazz = TypeSpec.classBuilder(typeElement.getSimpleName() + "$$Controller")
         .addJavadoc(Constant.DOC_EDIT_WARN)
         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-        .superclass(ClassName.get(Constant.ANDSERVER_PACKAGE, "BaseController"))
+        .superclass(ClassName.get(Constant.ANDSERVER_PACKAGE, "BaseRestController"))
         .addField(controller)
         .addMethod(constructor)
         .build();
@@ -119,7 +119,7 @@ public class ControllerProcessor extends AbstractProcessor {
   @Override
   public Set<String> getSupportedAnnotationTypes() {
     Set<String> annotations = new LinkedHashSet<>();
-    annotations.add(Controller.class.getCanonicalName());
+    annotations.add(RestController.class.getCanonicalName());
     return annotations;
   }
 
