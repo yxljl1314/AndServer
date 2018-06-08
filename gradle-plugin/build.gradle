@@ -1,31 +1,17 @@
-apply plugin: rootProject.ext.plugins.javaLibrary
 apply plugin: rootProject.ext.plugins.javaPluginGradle
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-dependencies {
-  compile gradleApi()
-}
+dependencies {}
 
 gradlePlugin {
-  plugins {
-    andserver {
-      id = 'com.yanzhenjie.andserver'
-      implementationClass = 'com.yanzhenjie.andserver.gradle.plugin.MainPlugin'
+    plugins {
+        andserver {
+            id = rootProject.ext.bintray.group
+            implementationClass = 'com.yanzhenjie.andserver.gradle.plugin.MainPlugin'
+        }
     }
-  }
 }
 
-apply plugin: 'maven-publish'
-
-group = 'com.yanzhenjie.andserver'
-version = '2.0.0-alpha'
-
-publishing {
-  repositories {
-    maven {
-      url "../maven-repo"
-    }
-  }
-}
+apply from: 'maven.gradle'

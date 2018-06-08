@@ -2,27 +2,39 @@ apply plugin: rootProject.ext.plugins.android
 apply plugin: rootProject.ext.plugins.andserver
 
 android {
-  compileSdkVersion rootProject.ext.android.compileSdkVersion
-  buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
-  defaultConfig {
-    applicationId rootProject.ext.android.applicationId
-    minSdkVersion rootProject.ext.android.sampleMinSdkVersion
-    targetSdkVersion rootProject.ext.android.sampleTargetSdkVersion
-    versionCode rootProject.ext.android.versionCode
-    versionName rootProject.ext.android.versionName
-  }
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.sampleMinSdkVersion
+        targetSdkVersion rootProject.ext.android.sampleTargetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+    }
 }
 
 dependencies {
-  // implementation rootProject.ext.dependencies.andserverApi
-  // implementation rootProject.ext.dependencies.andserverAnnotation
-  // annotationProcessor rootProject.ext.dependencies.andserverProcessor
-  implementation project(':api')
-  implementation project(':annotation')
-  annotationProcessor project(':processor')
+    // implementation rootProject.ext.dependencies.andserverApi
+    // implementation rootProject.ext.dependencies.andserverAnnotation
+    // annotationProcessor rootProject.ext.dependencies.andserverProcessor
+    implementation project(':api')
+    implementation project(':annotation')
+    annotationProcessor project(':processor')
 
-  implementation rootProject.ext.dependencies.design
-  implementation rootProject.ext.dependencies.appCompat
-  implementation rootProject.ext.dependencies.loading
+    implementation rootProject.ext.dependencies.design
+    implementation rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.loading
+}
+
+buildscript {
+    repositories {
+        maven {
+            url uri('../maven-repo')
+        }
+    }
+
+    dependencies {
+        classpath 'com.yanzhenjie.andserver:gradle-plugin:2.0.0-alpha'
+    }
 }
